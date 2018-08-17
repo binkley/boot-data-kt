@@ -9,9 +9,9 @@ import javax.validation.constraints.NotBlank
 
 @Entity
 class PersonRecord(
-        @Id @GeneratedValue(strategy = AUTO)
-        val id: Long = 0,
         @get:NotBlank
         @get:Max(100)
-        val name: String = ""
+        val name: String = "",
+        @Id @GeneratedValue(strategy = AUTO)
+        val id: Long = 0
 )
