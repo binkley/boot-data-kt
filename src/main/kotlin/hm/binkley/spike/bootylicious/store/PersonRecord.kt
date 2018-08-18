@@ -1,17 +1,18 @@
 package hm.binkley.spike.bootylicious.store
 
+import org.hibernate.validator.constraints.Length
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType.AUTO
 import javax.persistence.Id
-import javax.validation.constraints.Max
+import javax.persistence.Table
 import javax.validation.constraints.NotBlank
 
 @Entity
-class PersonRecord(
+@Table(name = "Person")
+data class PersonRecord(
         @get:NotBlank
-        @get:Max(100)
+        @get:Length(max = 100)
         val name: String = "",
-        @Id @GeneratedValue(strategy = AUTO)
-        val id: Long = 0
+        @Id @GeneratedValue
+        val id: Long = Long.MIN_VALUE
 )
