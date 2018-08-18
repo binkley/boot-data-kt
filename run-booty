@@ -85,13 +85,59 @@ function -setup-colors {
 }
 
 
-function person {
-    :
+function app {
+    local background=false
+    while getopts :-: opt
+    do
+        [[ - == $opt ]] && opt=${OPTARG%%=*} OPTARG=${OPTARG#*=}
+        case $opt in
+        d | background ) background=true ;;
+        * ) -print-usage >&2
+            echo "Try '$progname --help' for more information." >&2
+            exit 2
+            ;;
+        esac
+    done
+    shift $((OPTIND - 1))
+
+    if $background
+    then
+        nohup ./mvnw spring-boot:run "$@" >app.log 2>&1 & echo $! >app.pid
+        while :
+        do
+            sleep 1
+            grep 'Started BootyliciousApplication' app.log >/dev/null && break
+        done
+    else
+        ./mvnw spring-boot:run
+    fi
 }
 
-function -person-help {
+function -app-help {
+    cat <<'EOH'
+Runs the app process in the background.  See `app.log` and `app.pid`.
+EOH
+}
+
+function people {
+    case "$1" in
+    cat ) ;;
+    ed ) ;;
+    ls ) ;;
+    rm ) ;;
+    touch ) ;;
+    * ) -print-usage >&2 ; exit 2 ;;
+    esac
+}
+
+function -people-help {
     cat <<EOH
-Updates people.
+Updates people:
+   * cat - Prints an existing person
+   * ed - Updates an existing person
+   * ls - Lists all people
+   * rm - Removes an existing person
+   * touch - Adds a new person
 EOH
 }
 
@@ -108,7 +154,7 @@ EOU
 }
 
 function -format-help {
-   $fmt | sed 's/^/       /'
+   sed 's/^/       /' | $fmt
 }
 
 function -print-help {
@@ -167,7 +213,10 @@ readonly run
 readonly verbose
 
 case $# in
-0 ) ;;
+0 ) echo "$progname: No command." >&2
+    echo "Try '$progname --help' for more information." >&2
+    -print-usage >&2
+    exit 2 ;;
 * ) # TODO: This is ugly code
     cmd="$1"
     found=false
@@ -189,9 +238,5 @@ $debug && set -x
 
 
 case $# in
-0 ) echo "$progname: No command." >&2
-    echo "Try '$progname --help' for more information." >&2
-    -print-usage >&2
-    exit 2 ;;
 * ) "$@" ; exit ;;
 esac

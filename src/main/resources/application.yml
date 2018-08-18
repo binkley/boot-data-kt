@@ -1,6 +1,7 @@
 logging:
   level:
     root: warn
+    hm.binkley: info
 
 spring:
   jpa:
