@@ -3,6 +3,11 @@ logging:
     root: warn
 
 spring:
+  jpa:
+    hibernate:
+      show-sql: false
+  main:
+    banner-mode: 'OFF'  # case-sensitive, plain "OFF" is treated as 'false'
   output:
     ansi:
       enabled: always
