@@ -119,13 +119,39 @@ Runs the app process in the background.  See `app.log` and `app.pid`.
 EOH
 }
 
+function -touch-person {
+    local name="$1" ; shift
+    cat <<EOD | jurlq -X POST -H 'content-type:application/json' \
+        -d @- localhost:8080/people
+{
+     "name": "$name"
+}
+EOD
+}
+
+function -cat-person {
+    :
+}
+
+function -ed-person {
+    :
+}
+
+function -ls-people {
+    :
+}
+
+function -rm-people {
+    :
+}
+
 function people {
     case "$1" in
-    cat ) ;;
-    ed ) ;;
-    ls ) ;;
-    rm ) ;;
-    touch ) ;;
+    cat | ed | ls | rm | touch )
+        local cmd="$1"
+        shift
+        "-$cmd-person" "$@"
+        ;;
     * ) -print-usage >&2 ; exit 2 ;;
     esac
 }
