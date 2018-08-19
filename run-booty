@@ -86,6 +86,12 @@ function -setup-colors {
 
 
 function app {
+    if [[ -r app.pid ]]
+    then
+        local oldpid=$(<app.pid)
+        kill $oldpid 2>/dev/null
+    fi
+
     local background=false
     while getopts :-: opt
     do
