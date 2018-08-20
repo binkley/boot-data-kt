@@ -126,6 +126,11 @@ EOH
 }
 
 function -touch-person {
+    case $# in
+        1 ) ;;
+        * ) -print-usage >&2 ; exit 2 ;;
+    esac
+
     local name="$1" ; shift
     cat <<EOD | jurlq -X POST -H 'content-type:application/json' \
         -d @- localhost:8080/people
