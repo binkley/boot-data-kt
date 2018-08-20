@@ -131,43 +131,117 @@ function -touch-person {
         * ) -print-usage >&2 ; exit 2 ;;
     esac
 
-    local name="$1" ; shift
-    cat <<EOD | jurlq -X POST -H 'content-type:application/json' \
-        -d @- localhost:8080/people
+    local name="$1"
+    shift
+
+    if $dry_run
+    then
+        cat <<EOR
+jurlq -X POST -H 'Content-Type: application/json; charset=UTF-8' \\
+    -d @- localhost:8080/people <<EOD
 {
      "name": "$name"
 }
 EOD
+EOR
+    else
+        jurlq -X POST -H 'Content-Type: application/json; charset=UTF-8' \
+            -d @- localhost:8080/people <<EOD
+{
+     "name": "$name"
+}
+EOD
+    fi
 }
 
 function -cat-person {
-    :
+    case $# in
+        1 ) ;;
+        * ) -print-usage >&2 ; exit 2 ;;
+    esac
+
+    local id="$1"
+    shift
+
+    $jurlq localhost:8080/people/"$id"
 }
 
 function -ed-person {
-    :
+    case $# in
+        2 ) ;;
+        * ) -print-usage >&2 ; exit 2 ;;
+    esac
+
+    local id="$1"
+    local name="$2"
+    shift 2
+
+    # TODO: RFC 6902 - can I use JSON patch?
+    if $dry_run
+    then
+        cat <<EOR
+jurlq -X PATCH -H 'Content-Type: application/merge-patch+json; charset=UTF-8' \
+    -d @- localhost:8080/people/$id <<EOD
+{
+     "name": "$name"
+}
+EOD
+EOR
+    else
+jurlq -X PATCH -H 'Content-Type: application/merge-patch+json; charset=UTF-8' \
+    -d @- localhost:8080/people/$id <<EOD
+{
+     "name": "$name"
+}
+EOD
+    fi
 }
 
 function -ls-people {
-    :
+    case $# in
+        0 ) ;;
+        * ) -print-usage >&2 ; exit 2 ;;
+    esac
+
+    $jurlq localhost:8080/people
 }
 
-function -rm-people {
-    :
+function -man-people {
+    case $# in
+        0 ) ;;
+        * ) -print-usage >&2 ; exit 2 ;;
+    esac
+
+    $jurlq localhost:8080/profile/people
+}
+
+function -rm-person {
+    case $# in
+        1 ) ;;
+        * ) -print-usage >&2 ; exit 2 ;;
+    esac
+
+    local id="$1" ; shift
+    $jurlq -X DELETE localhost:8080/people/"$id"
 }
 
 function people {
     case "$1" in
-    cat | ed | ls | rm | touch )
+    cat | ed | rm | touch )
         local cmd="$1"
         shift
         "-$cmd-person" "$@"
+        ;;
+    ls | man )
+        local cmd="$1"
+        shift
+        "-$cmd-people" "$@"
         ;;
     * ) -print-usage >&2 ; exit 2 ;;
     esac
 }
 
-function -people-help {
+function -people-help-nofmt {
     cat <<EOH
 Updates people:
    * cat - Prints an existing person
@@ -191,7 +265,10 @@ EOU
 }
 
 function -format-help {
-   sed 's/^/       /' | $fmt
+    case $# in
+    0 ) sed 's/^/       /' | $fmt ;;
+    * ) sed 's/^/       /' ;;
+    esac
 }
 
 function -print-help {
@@ -211,20 +288,34 @@ Tasks:
 EOH
     for task in "${tasks[@]}"
     do
-        local help_fn="-$task-help"
         echo "  * $task"
+
+        local help_fn="-$task-help-nofmt"
+        if declare -F -- $help_fn >/dev/null 2>&1
+        then
+            $help_fn | -format-help -X
+            continue
+        fi
+
+        help_fn="-$task-help"
         if declare -F -- $help_fn >/dev/null 2>&1
         then
             $help_fn | -format-help
+            continue
         fi
     done
+}
+
+jurlq=jurlq
+function -dry-run {
+    jurlq='echo jurlq'
 }
 
 -setup-terminal
 
 [[ -t 1 ]] && color=true || color=false
 debug=false
-run=
+dry_run=false
 verbose=false
 while getopts :-: opt
 do
@@ -234,7 +325,7 @@ do
     no-color ) color=false ;;
     d | debug ) debug=true ;;
     h | help ) -print-help ; exit 0 ;;
-    n | dry-run ) run=echo ;;
+    n | dry-run ) dry_run=true ; -dry-run ;;
     v | verbose ) verbose=true ;;
     * ) -print-usage >&2
         echo "Try '$progname --help' for more information." >&2
