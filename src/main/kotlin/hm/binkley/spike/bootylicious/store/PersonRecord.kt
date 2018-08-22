@@ -1,7 +1,6 @@
 package hm.binkley.spike.bootylicious.store
 
 import org.hibernate.validator.constraints.Length
-import org.springframework.data.rest.core.annotation.RestResource
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -15,5 +14,4 @@ data class PersonRecord(
         @get:Length(max = 100)
         val name: String = "",
         @Id @GeneratedValue
-        val id: Long = Long.MIN_VALUE
-)
+        val id: Long = Long.MIN_VALUE)
