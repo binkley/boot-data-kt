@@ -1,4 +1,4 @@
-package hm.binkley.spike.bootylicious.service
+package hm.binkley.spike.bootylicious.domain
 
 import hm.binkley.spike.bootylicious.store.PersonRecord
 import hm.binkley.spike.bootylicious.store.PersonRepository

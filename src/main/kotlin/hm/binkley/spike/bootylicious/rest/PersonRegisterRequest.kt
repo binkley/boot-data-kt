@@ -1,7 +1,6 @@
 package hm.binkley.spike.bootylicious.rest
 
-import hm.binkley.spike.bootylicious.service.Person
-import hm.binkley.spike.bootylicious.store.PersonRepository
+import hm.binkley.spike.bootylicious.domain.PersonFactory
 import org.hibernate.validator.constraints.Length
 import javax.validation.constraints.NotBlank
 
@@ -10,5 +9,5 @@ data class PersonRegisterRequest(
         @get:Length(max = 100)
         val name: String = ""
 ) {
-    fun toDomain(repository: PersonRepository) = Person(name, repository)
+    fun toDomain(personFactory: PersonFactory) = personFactory.person(name)
 }
