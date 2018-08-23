@@ -1,6 +1,6 @@
 package hm.binkley.spike.bootylicious.rest
 
-import hm.binkley.spike.bootylicious.service.PersonService
+import hm.binkley.spike.bootylicious.store.PersonRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.web.bind.annotation.PostMapping
@@ -11,11 +11,11 @@ import javax.validation.Valid
 
 @RestController("/api/people")
 class PersonController(
-        @Autowired val service: PersonService
+        @Autowired val repository: PersonRepository
 ) {
     @PostMapping("/register")
     @ResponseStatus(CREATED)
     fun register(@Valid @RequestBody request: PersonRegisterRequest) {
-        service.register(request.toDomain())
+        request.toDomain(repository).register()
     }
 }
