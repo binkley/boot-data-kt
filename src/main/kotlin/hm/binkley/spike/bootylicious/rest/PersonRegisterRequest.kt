@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank
 data class PersonRegisterRequest(
         @get:NotBlank
         @get:Length(max = 100)
-        val name: String = "") {
+        val name: String = ""
+) {
     fun toDomain() = Person(name)
 }

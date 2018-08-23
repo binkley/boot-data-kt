@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 @RestController("/api/people")
-class PersonController(@Autowired val service: PersonService) {
+class PersonController(
+        @Autowired val service: PersonService
+) {
     @PostMapping("/register")
     @ResponseStatus(CREATED)
     fun register(@Valid @RequestBody request: PersonRegisterRequest) {
