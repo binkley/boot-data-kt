@@ -125,6 +125,16 @@ Runs the app process in the background.  See `app.log` and `app.pid`.
 EOH
 }
 
+function build {
+    ./mvnw
+}
+
+function -build-help {
+    cat <<EOH
+Runs a full, clean build.
+EOH
+}
+
 function -touch-person {
     case $# in
         1 ) ;;
