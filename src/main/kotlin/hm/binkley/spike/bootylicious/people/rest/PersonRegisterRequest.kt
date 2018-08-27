@@ -1,6 +1,6 @@
-package hm.binkley.spike.bootylicious.rest
+package hm.binkley.spike.bootylicious.people.rest
 
-import hm.binkley.spike.bootylicious.domain.PersonFactory
+import hm.binkley.spike.bootylicious.people.domain.PersonFactory
 import org.hibernate.validator.constraints.Length
 import javax.validation.constraints.NotBlank
 

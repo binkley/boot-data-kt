@@ -1,6 +1,6 @@
-package hm.binkley.spike.bootylicious.domain
+package hm.binkley.spike.bootylicious.people.domain
 
-import hm.binkley.spike.bootylicious.store.PersonRepository
+import hm.binkley.spike.bootylicious.people.store.PersonRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

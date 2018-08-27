@@ -1,4 +1,4 @@
-package hm.binkley.spike.bootylicious.store
+package hm.binkley.spike.bootylicious.people.store
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource

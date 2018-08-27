@@ -1,10 +1,10 @@
-package hm.binkley.spike.bootylicious.rest
+package hm.binkley.spike.bootylicious.people.rest
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.nhaarman.mockito_kotlin.whenever
-import hm.binkley.spike.bootylicious.domain.Person
-import hm.binkley.spike.bootylicious.domain.PersonFactory
-import hm.binkley.spike.bootylicious.store.PersonRepository
+import hm.binkley.spike.bootylicious.people.domain.Person
+import hm.binkley.spike.bootylicious.people.domain.PersonFactory
+import hm.binkley.spike.bootylicious.people.store.PersonRepository
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired

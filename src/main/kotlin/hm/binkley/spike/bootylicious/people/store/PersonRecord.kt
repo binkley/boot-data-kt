@@ -1,4 +1,4 @@
-package hm.binkley.spike.bootylicious.store
+package hm.binkley.spike.bootylicious.people.store
 
 import org.hibernate.validator.constraints.Length
 import javax.persistence.Entity

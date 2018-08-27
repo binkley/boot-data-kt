@@ -1,7 +1,7 @@
-package hm.binkley.spike.bootylicious.domain
+package hm.binkley.spike.bootylicious.people.domain
 
-import hm.binkley.spike.bootylicious.store.PersonRecord
-import hm.binkley.spike.bootylicious.store.PersonRepository
+import hm.binkley.spike.bootylicious.people.store.PersonRecord
+import hm.binkley.spike.bootylicious.people.store.PersonRepository
 
 data class Person(
         val name: String,

@@ -1,6 +1,6 @@
-package hm.binkley.spike.bootylicious.rest
+package hm.binkley.spike.bootylicious.people.rest
 
-import hm.binkley.spike.bootylicious.domain.PersonFactory
+import hm.binkley.spike.bootylicious.people.domain.PersonFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.web.bind.annotation.PostMapping
