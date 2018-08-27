@@ -17,7 +17,6 @@ class PeopleController(
 ) {
     @PostMapping("register")
     @ResponseStatus(CREATED)
-    fun register(@Valid @RequestBody request: PersonRegisterRequest) {
-        request.toDomain(personFactory).register()
-    }
+    fun register(@Valid @RequestBody request: PersonRegisterRequest) =
+            request.toDomain(personFactory).register()
 }

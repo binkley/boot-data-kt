@@ -5,8 +5,10 @@ logging:
 
 spring:
   jpa:
-    hibernate:
-      show-sql: false
+    properties:
+      hibernate:
+        show-sql: false
+    show-sql: false
   main:
     banner-mode: 'OFF'  # case-sensitive, plain "OFF" is treated as 'false'
   output:

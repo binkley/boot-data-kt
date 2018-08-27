@@ -9,7 +9,7 @@ data class Person(
 ) {
     fun toRecord() = PersonRecord(name)
 
-    fun register(): Unit {
+    fun register() {
         repository.save(toRecord())
     }
 }
