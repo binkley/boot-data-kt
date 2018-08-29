@@ -19,9 +19,19 @@ data class RoomRecord(
         val name: String = "",
         @OneToMany(cascade = [ALL], fetch = EAGER, orphanRemoval = true)
         @JoinColumn(name = "room_id")
-        val furniture: List<FurnishingRecord> = mutableListOf(),
+        val furniture: MutableList<FurnishingRecord> = mutableListOf(),
         @Id @GeneratedValue
         val id: Long = Long.MIN_VALUE) {
+
+    fun add(furnishing: FurnishingRecord): RoomRecord {
+        furniture.add(furnishing)
+        return this
+    }
+
+    fun remove(furnishing: FurnishingRecord): RoomRecord {
+        furniture.remove(furnishing)
+        return this
+    }
 
     override fun equals(other: Any?): Boolean {
         if (null == other || other !is RoomRecord) return false;
