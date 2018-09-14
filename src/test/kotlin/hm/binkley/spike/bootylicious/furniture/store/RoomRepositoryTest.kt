@@ -17,61 +17,45 @@ internal class RoomRepositoryTest(
 ) {
     @Test
     fun shouldRoundtrip() {
-        val saved = repository.save(RoomRecord(
+        val room = RoomRecord(
                 name = "Bob")
                 .add(FurnishingRecord(
-                        name = "desk")))
+                        name = "desk"))
+        val saved = entityManager.persistFlushFind(room)
 
-        entityManager.flush()
-        entityManager.clear()
-
-        assertThat(repository.getOne(saved.id))
-                .isEqualTo(saved)
+        assertThat(saved).isEqualTo(room)
     }
 
     @Test
     fun shouldRemoveOrphans() {
-        val saved = repository.save(RoomRecord(
+        val room = RoomRecord(
                 name = "Bob")
                 .add(FurnishingRecord(
-                        name = "desk")))
-
-        entityManager.flush()
-        entityManager.clear()
+                        name = "desk"))
+        var saved = entityManager.persistFlushFind(room)
 
         val furnishing = saved.furniture[0]
         saved.remove(furnishing)
-        val savedAgain = repository.save(saved)
+        saved = entityManager.persistFlushFind(saved)
 
-        entityManager.flush()
-        entityManager.clear()
-
-        assertThat(repository.findById(savedAgain.id)
-                .map(RoomRecord::furniture)
-                .get())
+        assertThat(saved.furniture)
                 .isEmpty()
         assertThat(furnishingRepository.findById(furnishing.id)).isEmpty
     }
 
     @Test
     fun shouldUpdateNicely() {
-        val saved = repository.save(RoomRecord(
+        val room = RoomRecord(
                 name = "Bob")
                 .add(FurnishingRecord(
-                        name = "desk")))
-        entityManager.flush()
-        entityManager.clear()
+                        name = "desk"))
+        var saved = entityManager.persistFlushFind(room)
 
-        val updated = repository.save(saved.copy(
-                name = "Sally"))
+        saved = entityManager.persistFlushFind(saved
                 .add(FurnishingRecord(
-                        name = "chair"))
-        entityManager.flush()
-        entityManager.clear()
+                        name = "chair")))
 
-        assertThat(repository.getOne(updated.id))
-                .isEqualTo(updated)
-
-        println(furnishingRepository.findAll())
+        assertThat(saved.furniture.size).isEqualTo(2)
+        assertThat(furnishingRepository.count()).isEqualTo(2)
     }
 }
