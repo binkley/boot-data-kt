@@ -1,5 +1,5 @@
-CREATE TABLE Table (
+CREATE TABLE Station (
   id BIGINT PRIMARY KEY,
   name VARCHAR(100) NOT NULL UNIQUE,
-  room_id BIGINT REFERENCES Room(id)
+  table_id BIGINT REFERENCES Table(id)
 );

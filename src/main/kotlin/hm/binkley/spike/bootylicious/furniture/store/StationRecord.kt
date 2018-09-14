@@ -1,37 +1,34 @@
 package hm.binkley.spike.bootylicious.furniture.store
 
 import org.hibernate.validator.constraints.Length
-import java.util.Objects
-import javax.persistence.CascadeType.ALL
 import javax.persistence.Entity
 import javax.persistence.FetchType.EAGER
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
-import javax.persistence.OneToMany
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
 import javax.persistence.Table
 import javax.validation.constraints.NotBlank
 
 @Entity
-@Table(name = "Room")
-data class RoomRecord(
+@Table(name = "Station")
+data class StationRecord(
         @get:NotBlank
         @get:Length(max = 100)
         val name: String = "",
-        @OneToMany(mappedBy = "room", cascade = [ALL], fetch = EAGER,
-                orphanRemoval = true)
-        val tables: MutableList<TableRecord> = mutableListOf(),
         @Id @GeneratedValue
         val id: Long = Long.MIN_VALUE) {
+    @ManyToOne(fetch = EAGER)
+    @JoinColumn(name = "table_id")
+    private var table: TableRecord? = null
 
-    fun add(table: TableRecord): RoomRecord {
-        tables.add(table)
-        table.addTo(this)
+    fun addTo(room: TableRecord): StationRecord {
+        this.table = room
         return this
     }
 
-    fun remove(table: TableRecord): RoomRecord {
-        tables.remove(table)
-        table.removeFrom()
+    fun removeFrom(): StationRecord {
+        this.table = null
         return this
     }
 
@@ -39,10 +36,9 @@ data class RoomRecord(
         if (null == other || other !is RoomRecord) return false;
 
         return name == other.name
-                && ArrayList(tables) == ArrayList(other.tables)
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(name, ArrayList(tables))
+        return super.hashCode()
     }
 }
