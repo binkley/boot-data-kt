@@ -1,5 +1,5 @@
 package hm.binkley.spike.bootylicious.furniture.domain
 
-data class Furnishing(
+data class Table(
         val name: String
 )

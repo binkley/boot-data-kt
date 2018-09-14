@@ -18,19 +18,19 @@ data class RoomRecord(
         val name: String = "",
         @OneToMany(mappedBy = "room", cascade = [ALL], fetch = EAGER,
                 orphanRemoval = true)
-        val furniture: MutableList<FurnishingRecord> = mutableListOf(),
+        val tables: MutableList<TableRecord> = mutableListOf(),
         @Id @GeneratedValue
         val id: Long = Long.MIN_VALUE) {
 
-    fun add(furnishing: FurnishingRecord): RoomRecord {
-        furniture.add(furnishing)
-        furnishing.addTo(this)
+    fun add(table: TableRecord): RoomRecord {
+        tables.add(table)
+        table.addTo(this)
         return this
     }
 
-    fun remove(furnishing: FurnishingRecord): RoomRecord {
-        furniture.remove(furnishing)
-        furnishing.removeFrom()
+    fun remove(table: TableRecord): RoomRecord {
+        tables.remove(table)
+        table.removeFrom()
         return this
     }
 
@@ -38,6 +38,6 @@ data class RoomRecord(
         if (null == other || other !is RoomRecord) return false;
 
         return name == other.name
-                && ArrayList(furniture) == ArrayList(other.furniture)
+                && ArrayList(tables) == ArrayList(other.tables)
     }
 }

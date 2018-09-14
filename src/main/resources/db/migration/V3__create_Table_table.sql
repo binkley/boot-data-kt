@@ -1,4 +1,4 @@
-CREATE TABLE Furnishing (
+CREATE TABLE Table (
   id BIGINT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   room_id BIGINT REFERENCES Room(id)

@@ -12,15 +12,15 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @ExtendWith(SpringExtension::class)
 internal class RoomRepositoryTest(
         @Autowired val repository: RoomRepository,
-        @Autowired val furnishingRepository: FurnishingRepository,
+        @Autowired val tableRepository: TableRepository,
         @Autowired val entityManager: TestEntityManager
 ) {
     @Test
     fun shouldRoundtrip() {
         val room = RoomRecord(
                 name = "Bob")
-                .add(FurnishingRecord(
-                        name = "desk"))
+                .add(TableRecord(
+                        name = "Front"))
         val saved = entityManager.persistFlushFind(room)
 
         assertThat(saved).isEqualTo(room)
@@ -30,32 +30,32 @@ internal class RoomRepositoryTest(
     fun shouldRemoveOrphans() {
         val room = RoomRecord(
                 name = "Bob")
-                .add(FurnishingRecord(
-                        name = "desk"))
+                .add(TableRecord(
+                        name = "Front"))
         var saved = entityManager.persistFlushFind(room)
 
-        val furnishing = saved.furniture[0]
+        val furnishing = saved.tables[0]
         saved.remove(furnishing)
         saved = entityManager.persistFlushFind(saved)
 
-        assertThat(saved.furniture)
+        assertThat(saved.tables)
                 .isEmpty()
-        assertThat(furnishingRepository.findById(furnishing.id)).isEmpty
+        assertThat(tableRepository.findById(furnishing.id)).isEmpty
     }
 
     @Test
     fun shouldUpdateNicely() {
         val room = RoomRecord(
                 name = "Bob")
-                .add(FurnishingRecord(
-                        name = "desk"))
+                .add(TableRecord(
+                        name = "Front"))
         var saved = entityManager.persistFlushFind(room)
 
         saved = entityManager.persistFlushFind(saved
-                .add(FurnishingRecord(
-                        name = "chair")))
+                .add(TableRecord(
+                        name = "Back")))
 
-        assertThat(saved.furniture.size).isEqualTo(2)
-        assertThat(furnishingRepository.count()).isEqualTo(2)
+        assertThat(saved.tables.size).isEqualTo(2)
+        assertThat(tableRepository.count()).isEqualTo(2)
     }
 }
