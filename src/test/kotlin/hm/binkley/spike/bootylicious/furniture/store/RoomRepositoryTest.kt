@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import java.util.Optional
 
 @DataJpaTest
 @ExtendWith(SpringExtension::class)
@@ -18,26 +17,34 @@ internal class RoomRepositoryTest(
 ) {
     @Test
     fun shouldRoundtrip() {
-        val saved = repository.saveAndFlush(RoomRecord(
-                name = "Bob",
-                furniture = mutableListOf(FurnishingRecord(
-                        name = "desk"))))
+        val saved = repository.save(RoomRecord(
+                name = "Bob")
+                .add(FurnishingRecord(
+                        name = "desk")))
+
+        entityManager.flush()
         entityManager.clear()
 
-        assertThat(repository.findById(saved.id))
-                .isEqualTo(Optional.of(saved))
+        assertThat(repository.getOne(saved.id))
+                .isEqualTo(saved)
     }
 
     @Test
     fun shouldRemoveOrphans() {
-        val saved = repository.saveAndFlush(RoomRecord(
-                name = "Bob",
-                furniture = mutableListOf(FurnishingRecord(
-                        name = "desk"))))
+        val saved = repository.save(RoomRecord(
+                name = "Bob")
+                .add(FurnishingRecord(
+                        name = "desk")))
+
+        entityManager.flush()
         entityManager.clear()
+
         val furnishing = saved.furniture[0]
         saved.remove(furnishing)
-        val savedAgain = repository.saveAndFlush(saved)
+        val savedAgain = repository.save(saved)
+
+        entityManager.flush()
+        entityManager.clear()
 
         assertThat(repository.findById(savedAgain.id)
                 .map(RoomRecord::furniture)
@@ -48,21 +55,22 @@ internal class RoomRepositoryTest(
 
     @Test
     fun shouldUpdateNicely() {
-        val saved = repository.saveAndFlush(RoomRecord(
-                name = "Bob",
-                furniture = mutableListOf(FurnishingRecord(
-                        name = "desk"))))
+        val saved = repository.save(RoomRecord(
+                name = "Bob")
+                .add(FurnishingRecord(
+                        name = "desk")))
+        entityManager.flush()
         entityManager.clear()
 
-        val updated = repository.saveAndFlush(saved.copy(
-                name = "Sally",
-                furniture = mutableListOf(FurnishingRecord(
-                        name = "desk"), FurnishingRecord(
-                        name = "chair"))))
+        val updated = repository.save(saved.copy(
+                name = "Sally"))
+                .add(FurnishingRecord(
+                        name = "chair"))
+        entityManager.flush()
         entityManager.clear()
 
-        assertThat(repository.findById(updated.id))
-                .isEqualTo(Optional.of(updated))
+        assertThat(repository.getOne(updated.id))
+                .isEqualTo(updated)
 
         println(furnishingRepository.findAll())
     }

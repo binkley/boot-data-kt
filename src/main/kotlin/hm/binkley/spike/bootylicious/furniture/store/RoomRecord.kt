@@ -6,7 +6,6 @@ import javax.persistence.Entity
 import javax.persistence.FetchType.EAGER
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
-import javax.persistence.JoinColumn
 import javax.persistence.OneToMany
 import javax.persistence.Table
 import javax.validation.constraints.NotBlank
@@ -17,19 +16,21 @@ data class RoomRecord(
         @get:NotBlank
         @get:Length(max = 100)
         val name: String = "",
-        @OneToMany(cascade = [ALL], fetch = EAGER, orphanRemoval = true)
-        @JoinColumn(name = "room_id")
+        @OneToMany(mappedBy = "room", cascade = [ALL], fetch = EAGER,
+                orphanRemoval = true)
         val furniture: MutableList<FurnishingRecord> = mutableListOf(),
         @Id @GeneratedValue
         val id: Long = Long.MIN_VALUE) {
 
     fun add(furnishing: FurnishingRecord): RoomRecord {
         furniture.add(furnishing)
+        furnishing.addTo(this)
         return this
     }
 
     fun remove(furnishing: FurnishingRecord): RoomRecord {
         furniture.remove(furnishing)
+        furnishing.removeFrom()
         return this
     }
 
