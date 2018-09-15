@@ -1,4 +1,4 @@
-package hm.binkley.spike.bootdatakt.furniture.domain
+package hm.binkley.spike.bootdatakt.domain
 
 data class Room(
         val name: String,

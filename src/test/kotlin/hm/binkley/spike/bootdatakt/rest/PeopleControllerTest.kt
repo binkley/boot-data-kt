@@ -1,10 +1,10 @@
-package hm.binkley.spike.bootdatakt.people.rest
+package hm.binkley.spike.bootdatakt.rest
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.nhaarman.mockito_kotlin.whenever
-import hm.binkley.spike.bootdatakt.people.domain.Person
-import hm.binkley.spike.bootdatakt.people.domain.PersonFactory
-import hm.binkley.spike.bootdatakt.people.store.PersonRepository
+import hm.binkley.spike.bootdatakt.domain.Person
+import hm.binkley.spike.bootdatakt.domain.PersonFactory
+import hm.binkley.spike.bootdatakt.store.PersonRepository
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,11 +31,14 @@ internal class PeopleControllerTest(
     fun shouldWork() {
         val name = "Bob"
         whenever(personFactory.person(name))
-                .thenReturn(Person(name, repository))
+                .thenReturn(Person(name,
+                        repository))
 
         mvc.perform(post("/api/people/register")
                 .contentType(APPLICATION_JSON_UTF8)
-                .content(asJson(PersonRegisterRequest(name))))
+                .content(asJson(
+                        PersonRegisterRequest(
+                                name))))
                 .andExpect(status().isCreated)
     }
 

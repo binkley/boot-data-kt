@@ -1,4 +1,4 @@
-package hm.binkley.spike.bootdatakt.furniture.store
+package hm.binkley.spike.bootdatakt.store
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -58,24 +58,5 @@ internal class RoomRepositoryTest(
 
         assertThat(saved.tables.size).isEqualTo(2)
         assertThat(tableRepository.count()).isEqualTo(2)
-    }
-
-    @Test
-    fun shouldHandleGrandkids() {
-        val room = RoomRecord(
-                name = "Bob")
-                .add(TableRecord(
-                        name = "Front"))
-        var saved = entityManager.persistFlushFind(room)
-        room.tables[0].add(StationRecord("Science"))
-        saved = repository.save(saved)
-        entityManager.flush()
-        room.tables[0].add(StationRecord("Helm"))
-        saved = repository.save(saved)
-        entityManager.flush()
-        entityManager.refresh(saved)
-
-        assertThat(saved.tables[0].stations.size).isEqualTo(2)
-        assertThat(stationRepository.count()).isEqualTo(2)
     }
 }

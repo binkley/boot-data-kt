@@ -1,4 +1,4 @@
-package hm.binkley.spike.bootdatakt.people.store
+package hm.binkley.spike.bootdatakt.store
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -17,7 +17,8 @@ internal class PersonRepositoryTest(
 ) {
     @Test
     fun shouldRoundtrip() {
-        val saved = repository.saveAndFlush(PersonRecord(name = "Bob"))
+        val saved = repository.saveAndFlush(
+                PersonRecord(name = "Bob"))
         entityManager.clear()
 
         assertThat(repository.findById(saved.id))

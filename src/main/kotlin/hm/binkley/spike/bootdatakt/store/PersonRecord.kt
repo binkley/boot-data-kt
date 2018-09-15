@@ -1,4 +1,4 @@
-package hm.binkley.spike.bootdatakt.people.store
+package hm.binkley.spike.bootdatakt.store
 
 import org.hibernate.validator.constraints.Length
 import javax.persistence.Entity

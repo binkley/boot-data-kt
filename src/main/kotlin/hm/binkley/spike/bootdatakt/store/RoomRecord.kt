@@ -1,4 +1,4 @@
-package hm.binkley.spike.bootdatakt.furniture.store
+package hm.binkley.spike.bootdatakt.store
 
 import org.hibernate.validator.constraints.Length
 import java.util.Objects

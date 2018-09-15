@@ -1,6 +1,6 @@
-package hm.binkley.spike.bootdatakt.people.domain
+package hm.binkley.spike.bootdatakt.domain
 
-import hm.binkley.spike.bootdatakt.people.store.PersonRepository
+import hm.binkley.spike.bootdatakt.store.PersonRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -8,5 +8,6 @@ import org.springframework.stereotype.Service
 class PersonFactory(
         @Autowired private val repository: PersonRepository
 ) {
-    fun person(name: String) = Person(name, repository)
+    fun person(name: String) = Person(name,
+            repository)
 }

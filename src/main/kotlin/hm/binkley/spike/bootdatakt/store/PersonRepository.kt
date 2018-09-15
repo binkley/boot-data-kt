@@ -1,4 +1,4 @@
-package hm.binkley.spike.bootdatakt.people.store
+package hm.binkley.spike.bootdatakt.store
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
