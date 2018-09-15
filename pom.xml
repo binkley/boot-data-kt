@@ -6,12 +6,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>hm.binkley.spike</groupId>
-    <artifactId>bootylicious</artifactId>
+    <artifactId>boot-data-kt</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>bootylicious</name>
-    <description>Demo project for Spring Boot</description>
+    <name>boot-data-kt</name>
+    <description>Sandbox for Spring Boot, Spring Data, and Kotlin</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
