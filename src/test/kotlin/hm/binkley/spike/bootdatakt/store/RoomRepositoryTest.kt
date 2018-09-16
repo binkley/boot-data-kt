@@ -34,7 +34,7 @@ internal class RoomRepositoryTest(
                         name = "Front"))
         var saved = entityManager.persistFlushFind(room)
 
-        val furnishing = saved.tables[0]
+        val furnishing = saved.tables.first()
         saved.remove(furnishing)
         saved = entityManager.persistFlushFind(saved)
 
@@ -68,50 +68,49 @@ internal class RoomRepositoryTest(
                 .add(table)
         var saved = entityManager.persistFlushFind(room)
 
-        saved.tables[0].add(StationRecord(
+        saved.tables.first().add(StationRecord(
                 name = "Science"))
 
         saved = entityManager.persistFlushFind(saved)
         saved.tables.forEach { entityManager.persistAndFlush(it) }
 
-        assertThat(saved.tables[0].stations).hasSize(1)
+        assertThat(saved.tables.first().stations).hasSize(1)
         assertThat(stationRepository.count()).isEqualTo(1)
 
-        saved.tables[0].add(StationRecord(
+        saved.tables.first().add(StationRecord(
                 name = "Helm"))
 
         saved = entityManager.persistFlushFind(saved)
         saved.tables.forEach { entityManager.persistAndFlush(it) }
 
-        assertThat(saved.tables[0].stations).hasSize(2)
+        assertThat(saved.tables.first().stations).hasSize(2)
         assertThat(stationRepository.count()).isEqualTo(2)
     }
 
     @Test
     fun shouldUpdateGrandchildrenWithRepository() {
-        val table = TableRecord(
-                name = "Front")
-        val room = RoomRecord(
+        val unsaved = RoomRecord(
                 name = "Bob")
-                .add(table)
-        var saved = roomRepository.save(room)
-        saved.tables[0].add(StationRecord(
+                .add(TableRecord(
+                        name = "Front"))
+        var saved = roomRepository.save(unsaved)
+
+        saved.tables.first().add(StationRecord(
                 name = "Science"))
 
-        saved = roomRepository.save(saved)
-        saved.tables.forEach { tableRepository.save(it) }
-        tableRepository.save(saved.tables[0])
+        saved = roomRepository.saveWhole(saved, tableRepository)
 
-        assertThat(saved.tables[0].stations).hasSize(1)
+        assertThat(saved.tables.first().stations).hasSize(1)
         assertThat(stationRepository.count()).isEqualTo(1)
 
-        saved.tables[0].add(StationRecord(
+        saved.tables.first().add(StationRecord(
                 name = "Helm"))
 
-        saved = roomRepository.save(saved)
-        saved.tables.forEach { tableRepository.save(it) }
+        saved = roomRepository.saveWhole(saved, tableRepository)
 
-        assertThat(saved.tables[0].stations).hasSize(2)
+        assertThat(saved.tables.first().stations).hasSize(2)
         assertThat(stationRepository.count()).isEqualTo(2)
+
+        assertThat(entityManager.persistFlushFind(saved)).isEqualTo(saved)
     }
 }

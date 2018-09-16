@@ -21,7 +21,7 @@ data class RoomRecord(
         val id: Long = Long.MIN_VALUE,
         @OneToMany(mappedBy = "room", cascade = [ALL], fetch = EAGER,
                 orphanRemoval = true)
-        val tables: MutableList<TableRecord> = mutableListOf()) {
+        val tables: MutableSet<TableRecord> = mutableSetOf()) {
     fun add(table: TableRecord): RoomRecord {
         tables.add(table)
         table.addTo(this)
@@ -39,10 +39,10 @@ data class RoomRecord(
 
         return id == other.id
                 && name == other.name
-                && ArrayList(tables) == ArrayList(other.tables)
+                && LinkedHashSet(tables) == LinkedHashSet(other.tables)
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(id, name, ArrayList(tables))
+        return Objects.hash(id, name, LinkedHashSet(tables))
     }
 }

@@ -11,7 +11,8 @@
     <packaging>jar</packaging>
 
     <name>boot-data-kt</name>
-    <description>Sandbox for Spring Boot, Spring Data, and Kotlin</description>
+    <description>Sandbox for Spring Boot, Spring Data, and Kotlin
+    </description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -147,6 +148,7 @@
                 <configuration>
                     <args>
                         <arg>-Xjsr305=strict</arg>
+                        <arg>-Xjvm-default=compatibility</arg>
                     </args>
                     <compilerPlugins>
                         <plugin>spring</plugin>
