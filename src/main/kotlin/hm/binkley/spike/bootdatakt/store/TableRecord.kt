@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 import javax.persistence.Table
 import javax.validation.constraints.NotBlank
+import kotlin.collections.LinkedHashSet
 
 @Entity
 @Table(name = "Table")
