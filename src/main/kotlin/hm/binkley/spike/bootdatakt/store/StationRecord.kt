@@ -1,13 +1,9 @@
 package hm.binkley.spike.bootdatakt.store
 
 import org.hibernate.validator.constraints.Length
-import javax.persistence.Entity
+import javax.persistence.*
+import javax.persistence.CascadeType.ALL
 import javax.persistence.FetchType.EAGER
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
-import javax.persistence.Table
 import javax.validation.constraints.NotBlank
 
 @Entity
@@ -15,10 +11,11 @@ import javax.validation.constraints.NotBlank
 data class StationRecord(
         @get:NotBlank
         @get:Length(max = 100)
-        val name: String = "",
-        @Id @GeneratedValue
-        val id: Long = Long.MIN_VALUE) {
-    @ManyToOne(fetch = EAGER)
+        val name: String = "") {
+    @Id
+    @GeneratedValue
+    val id: Long = Long.MIN_VALUE
+    @ManyToOne(fetch = EAGER, cascade = [ALL])
     @JoinColumn(name = "table_id")
     private var table: TableRecord? = null
 

@@ -11,7 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @DataJpaTest
 @ExtendWith(SpringExtension::class)
 internal class RoomRepositoryTest(
-        @Autowired val repository: RoomRepository,
+        @Autowired val roomRepository: RoomRepository,
         @Autowired val tableRepository: TableRepository,
         @Autowired val stationRepository: StationRepository,
         @Autowired val entityManager: TestEntityManager
@@ -45,7 +45,7 @@ internal class RoomRepositoryTest(
     }
 
     @Test
-    fun shouldUpdateNicely() {
+    fun shouldUpdateChildren() {
         val room = RoomRecord(
                 name = "Bob")
                 .add(TableRecord(
