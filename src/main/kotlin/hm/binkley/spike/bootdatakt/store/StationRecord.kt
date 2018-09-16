@@ -15,7 +15,7 @@ data class StationRecord(
     @Id
     @GeneratedValue
     val id: Long = Long.MIN_VALUE
-    @ManyToOne(fetch = EAGER, cascade = [ALL])
+    @ManyToOne(fetch = EAGER, cascade = [ALL], optional = false)
     @JoinColumn(name = "table_id")
     private var table: TableRecord? = null
 
@@ -30,7 +30,7 @@ data class StationRecord(
     }
 
     override fun equals(other: Any?): Boolean {
-        if (null == other || other !is RoomRecord) return false;
+        if (null == other || other !is RoomRecord) return false
 
         return name == other.name
     }

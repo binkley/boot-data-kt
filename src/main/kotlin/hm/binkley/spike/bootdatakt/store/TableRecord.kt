@@ -17,7 +17,7 @@ data class TableRecord(
     @Id
     @GeneratedValue
     val id: Long = Long.MIN_VALUE
-    @ManyToOne(fetch = EAGER, cascade = [ALL])
+    @ManyToOne(fetch = EAGER, cascade = [ALL], optional = false)
     @JoinColumn(name = "room_id")
     private var room: RoomRecord? = null
     @OneToMany(mappedBy = "table", cascade = [ALL], fetch = EAGER, orphanRemoval = true)

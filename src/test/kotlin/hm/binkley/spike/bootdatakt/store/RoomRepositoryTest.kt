@@ -14,8 +14,7 @@ internal class RoomRepositoryTest(
         @Autowired val roomRepository: RoomRepository,
         @Autowired val tableRepository: TableRepository,
         @Autowired val stationRepository: StationRepository,
-        @Autowired val entityManager: TestEntityManager
-) {
+        @Autowired val entityManager: TestEntityManager) {
     @Test
     fun shouldRoundtrip() {
         val room = RoomRecord(
@@ -68,10 +67,11 @@ internal class RoomRepositoryTest(
                 name = "Bob")
                 .add(table)
         var saved = entityManager.persistFlushFind(room)
-        table.add(StationRecord(
+        saved.tables[0].add(StationRecord(
                 name = "Science"))
 
         saved = entityManager.persistFlushFind(saved)
+        entityManager.persistFlushFind(saved.tables[0])
 
         assertThat(saved.tables[0].stations.size).isEqualTo(1)
         assertThat(stationRepository.count()).isEqualTo(1)
