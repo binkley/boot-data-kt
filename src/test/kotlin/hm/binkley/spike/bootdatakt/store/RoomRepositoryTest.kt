@@ -16,7 +16,7 @@ internal class RoomRepositoryTest(
         @Autowired val stationRepository: StationRepository,
         @Autowired val entityManager: TestEntityManager) {
     @Test
-    fun shouldRoundtrip() {
+    fun shouldRoundtripWithEntityManager() {
         val room = RoomRecord(
                 name = "Bob")
                 .add(TableRecord(
@@ -27,7 +27,7 @@ internal class RoomRepositoryTest(
     }
 
     @Test
-    fun shouldRemoveOrphans() {
+    fun shouldRemoveOrphansWithEntityManager() {
         val room = RoomRecord(
                 name = "Bob")
                 .add(TableRecord(
@@ -44,7 +44,7 @@ internal class RoomRepositoryTest(
     }
 
     @Test
-    fun shouldUpdateChildren() {
+    fun shouldUpdateChildrenWithEntityManager() {
         val room = RoomRecord(
                 name = "Bob")
                 .add(TableRecord(
@@ -60,7 +60,7 @@ internal class RoomRepositoryTest(
     }
 
     @Test
-    fun shouldUpdateGrandchildren() {
+    fun shouldUpdateGrandchildrenWithEntityManager() {
         val table = TableRecord(
                 name = "Front")
         val room = RoomRecord(
@@ -71,9 +71,46 @@ internal class RoomRepositoryTest(
                 name = "Science"))
 
         saved = entityManager.persistFlushFind(saved)
-        entityManager.persistFlushFind(saved.tables[0])
+        saved.tables.forEach { entityManager.persistAndFlush(it) }
 
-        assertThat(saved.tables[0].stations.size).isEqualTo(1)
+        assertThat(saved.tables[0].stations).hasSize(1)
         assertThat(stationRepository.count()).isEqualTo(1)
+
+        saved.tables[0].add(StationRecord(
+                name = "Helm"))
+
+        saved = entityManager.persistFlushFind(saved)
+        saved.tables.forEach { entityManager.persistAndFlush(it) }
+
+        assertThat(saved.tables[0].stations).hasSize(2)
+        assertThat(stationRepository.count()).isEqualTo(2)
+    }
+
+    @Test
+    fun shouldUpdateGrandchildrenWithRepository() {
+        val table = TableRecord(
+                name = "Front")
+        val room = RoomRecord(
+                name = "Bob")
+                .add(table)
+        var saved = roomRepository.save(room)
+        saved.tables[0].add(StationRecord(
+                name = "Science"))
+
+        saved = roomRepository.save(saved)
+        saved.tables.forEach { tableRepository.save(it) }
+        tableRepository.save(saved.tables[0])
+
+        assertThat(saved.tables[0].stations).hasSize(1)
+        assertThat(stationRepository.count()).isEqualTo(1)
+
+        saved.tables[0].add(StationRecord(
+                name = "Helm"))
+
+        saved = roomRepository.save(saved)
+        saved.tables.forEach { tableRepository.save(it) }
+
+        assertThat(saved.tables[0].stations).hasSize(2)
+        assertThat(stationRepository.count()).isEqualTo(2)
     }
 }
