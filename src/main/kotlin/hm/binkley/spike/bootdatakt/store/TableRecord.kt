@@ -2,26 +2,31 @@ package hm.binkley.spike.bootdatakt.store
 
 import org.hibernate.validator.constraints.Length
 import java.util.Objects
-import javax.persistence.*
 import javax.persistence.CascadeType.ALL
+import javax.persistence.Entity
 import javax.persistence.FetchType.EAGER
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
+import javax.persistence.Table
 import javax.validation.constraints.NotBlank
-import kotlin.collections.ArrayList
 
 @Entity
 @Table(name = "Table")
 data class TableRecord(
         @get:NotBlank
         @get:Length(max = 100)
-        val name: String = "") {
-    @Id
-    @GeneratedValue
-    val id: Long = Long.MIN_VALUE
+        val name: String = "",
+        @Id @GeneratedValue
+        val id: Long = Long.MIN_VALUE,
+        @OneToMany(mappedBy = "table", cascade = [ALL], fetch = EAGER,
+                orphanRemoval = true)
+        val stations: MutableList<StationRecord> = mutableListOf()) {
     @ManyToOne(fetch = EAGER, cascade = [ALL], optional = false)
     @JoinColumn(name = "room_id")
     private var room: RoomRecord? = null
-    @OneToMany(mappedBy = "table", cascade = [ALL], fetch = EAGER, orphanRemoval = true)
-    val stations: MutableList<StationRecord> = mutableListOf()
 
     fun addTo(room: RoomRecord): TableRecord {
         this.room = room
@@ -48,11 +53,12 @@ data class TableRecord(
     override fun equals(other: Any?): Boolean {
         if (null == other || other !is TableRecord) return false
 
-        return name == other.name
+        return id == other.id
+                && name == other.name
                 && ArrayList(stations) == ArrayList(other.stations)
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(name, ArrayList(stations))
+        return Objects.hash(id, name, ArrayList(stations))
     }
 }

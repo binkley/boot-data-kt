@@ -67,6 +67,7 @@ internal class RoomRepositoryTest(
                 name = "Bob")
                 .add(table)
         var saved = entityManager.persistFlushFind(room)
+
         saved.tables[0].add(StationRecord(
                 name = "Science"))
 
