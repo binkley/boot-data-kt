@@ -59,4 +59,21 @@ internal class RoomRepositoryTest(
         assertThat(saved.tables.size).isEqualTo(2)
         assertThat(tableRepository.count()).isEqualTo(2)
     }
+
+    @Test
+    fun shouldUpdateGrandchildren() {
+        val table = TableRecord(
+                name = "Front")
+        val room = RoomRecord(
+                name = "Bob")
+                .add(table)
+        var saved = entityManager.persistFlushFind(room)
+        table.add(StationRecord(
+                name = "Science"))
+
+        saved = entityManager.persistFlushFind(saved)
+
+        assertThat(saved.tables[0].stations.size).isEqualTo(1)
+        assertThat(stationRepository.count()).isEqualTo(1)
+    }
 }
