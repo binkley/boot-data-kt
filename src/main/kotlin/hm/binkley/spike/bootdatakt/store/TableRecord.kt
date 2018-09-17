@@ -55,10 +55,10 @@ data class TableRecord(
 
         return id == other.id
                 && name == other.name
-                && setOf(stations) == setOf(other.stations)
+                && stations == other.stations
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(id, name, setOf(stations))
+        return Objects.hash(id, name, stations)
     }
 }

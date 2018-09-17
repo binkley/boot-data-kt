@@ -39,10 +39,10 @@ data class RoomRecord(
 
         return id == other.id
                 && name == other.name
-                && setOf(tables) == setOf(other.tables)
+                && tables == other.tables
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(id, name, setOf(tables))
+        return Objects.hash(id, name, tables)
     }
 }
