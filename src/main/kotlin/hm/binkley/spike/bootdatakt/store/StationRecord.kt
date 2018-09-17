@@ -35,7 +35,7 @@ data class StationRecord(
     }
 
     override fun equals(other: Any?): Boolean {
-        if (null == other || other !is RoomRecord) return false
+        if (null == other || other !is StationRecord) return false
 
         return id == other.id
                 && name == other.name

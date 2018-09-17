@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 import javax.persistence.Table
 import javax.validation.constraints.NotBlank
-import kotlin.collections.LinkedHashSet
 
 @Entity
 @Table(name = "Table")
@@ -56,10 +55,10 @@ data class TableRecord(
 
         return id == other.id
                 && name == other.name
-                && LinkedHashSet(stations) == LinkedHashSet(other.stations)
+                && setOf(stations) == setOf(other.stations)
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(id, name, LinkedHashSet(stations))
+        return Objects.hash(id, name, setOf(stations))
     }
 }

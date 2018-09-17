@@ -39,10 +39,10 @@ data class RoomRecord(
 
         return id == other.id
                 && name == other.name
-                && LinkedHashSet(tables) == LinkedHashSet(other.tables)
+                && setOf(tables) == setOf(other.tables)
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(id, name, LinkedHashSet(tables))
+        return Objects.hash(id, name, setOf(tables))
     }
 }
