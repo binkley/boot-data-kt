@@ -24,7 +24,7 @@ data class TableRecord(
         @OneToMany(mappedBy = "table", cascade = [ALL], fetch = EAGER,
                 orphanRemoval = true)
         val stations: MutableSet<StationRecord> = mutableSetOf()) {
-    @ManyToOne(fetch = EAGER, cascade = [ALL], optional = false)
+    @ManyToOne(cascade = [ALL], fetch = EAGER, optional = false)
     @JoinColumn(name = "room_id")
     private var room: RoomRecord? = null
 

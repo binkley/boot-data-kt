@@ -17,11 +17,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ExtendWith(SpringExtension::class)
-@WebMvcTest
+@WebMvcTest(PeopleController::class)
 internal class PeopleControllerTest(
         @Autowired val mvc: MockMvc,
-        @Autowired val objectMapper: ObjectMapper
-) {
+        @Autowired val objectMapper: ObjectMapper) {
     @MockBean
     private lateinit var personFactory: PersonFactory
     @MockBean

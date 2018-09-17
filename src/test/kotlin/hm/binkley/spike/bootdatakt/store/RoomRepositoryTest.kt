@@ -72,7 +72,6 @@ internal class RoomRepositoryTest(
                 name = "Science"))
 
         saved = entityManager.persistFlushFind(saved)
-        saved.tables.forEach { entityManager.persistAndFlush(it) }
 
         assertThat(saved.tables.first().stations).hasSize(1)
         assertThat(stationRepository.count()).isEqualTo(1)
@@ -81,7 +80,6 @@ internal class RoomRepositoryTest(
                 name = "Helm"))
 
         saved = entityManager.persistFlushFind(saved)
-        saved.tables.forEach { entityManager.persistAndFlush(it) }
 
         assertThat(saved.tables.first().stations).hasSize(2)
         assertThat(stationRepository.count()).isEqualTo(2)
@@ -98,7 +96,7 @@ internal class RoomRepositoryTest(
         saved.tables.first().add(StationRecord(
                 name = "Science"))
 
-        saved = roomRepository.saveWhole(saved, tableRepository)
+        saved = roomRepository.save(saved)
 
         assertThat(saved.tables.first().stations).hasSize(1)
         assertThat(stationRepository.count()).isEqualTo(1)
@@ -106,7 +104,7 @@ internal class RoomRepositoryTest(
         saved.tables.first().add(StationRecord(
                 name = "Helm"))
 
-        saved = roomRepository.saveWhole(saved, tableRepository)
+        saved = roomRepository.save(saved)
 
         assertThat(saved.tables.first().stations).hasSize(2)
         assertThat(stationRepository.count()).isEqualTo(2)

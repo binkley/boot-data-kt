@@ -20,7 +20,7 @@ data class StationRecord(
         val name: String = "",
         @Id @GeneratedValue
         val id: Long = Long.MIN_VALUE) {
-    @ManyToOne(fetch = EAGER, cascade = [ALL], optional = false)
+    @ManyToOne(cascade = [ALL], fetch = EAGER, optional = false)
     @JoinColumn(name = "table_id")
     private var table: TableRecord? = null
 
