@@ -8,7 +8,8 @@ data class Table(
         val room: Room,
         val stations: Set<Station>) {
     fun toStore(room: RoomRecord): TableRecord {
-        val table = TableRecord(name, room)
+        val table = TableRecord(name)
+        table.room = room
         stations.forEach { table.stations.add(it.toStore(table)) }
         return table
     }

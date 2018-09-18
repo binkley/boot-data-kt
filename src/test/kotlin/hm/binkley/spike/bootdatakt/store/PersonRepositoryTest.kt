@@ -13,8 +13,7 @@ import java.util.Optional
 @ExtendWith(SpringExtension::class)
 internal class PersonRepositoryTest(
         @Autowired val repository: PersonRepository,
-        @Autowired val entityManager: TestEntityManager
-) {
+        @Autowired val entityManager: TestEntityManager) {
     @Test
     fun shouldRoundtrip() {
         val saved = repository.saveAndFlush(

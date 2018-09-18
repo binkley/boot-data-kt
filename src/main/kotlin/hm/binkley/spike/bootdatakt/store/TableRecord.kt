@@ -21,14 +21,15 @@ data class TableRecord(
         @get:NotBlank
         @get:Length(max = 100)
         val name: String = "",
-        @ManyToOne(cascade = [ALL], fetch = EAGER, optional = false)
-        @JoinColumn(name = "room_id")
-        private var room: RoomRecord? = null,
         @Id @GeneratedValue
         val id: Long = Long.MIN_VALUE,
         @OneToMany(mappedBy = "table", cascade = [ALL], fetch = EAGER,
                 orphanRemoval = true)
         val stations: MutableSet<StationRecord> = mutableSetOf()) {
+    @ManyToOne(cascade = [ALL], fetch = EAGER, optional = false)
+    @JoinColumn(name = "room_id")
+    var room: RoomRecord? = null
+
     fun addTo(room: RoomRecord): TableRecord {
         this.room = room
         return this

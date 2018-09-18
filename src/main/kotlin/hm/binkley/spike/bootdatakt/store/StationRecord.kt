@@ -19,11 +19,12 @@ data class StationRecord(
         @get:NotBlank
         @get:Length(max = 100)
         val name: String = "",
-        @ManyToOne(cascade = [ALL], fetch = EAGER, optional = false)
-        @JoinColumn(name = "table_id")
-        private var table: TableRecord? = null,
         @Id @GeneratedValue
         val id: Long = Long.MIN_VALUE) {
+    @ManyToOne(cascade = [ALL], fetch = EAGER, optional = false)
+    @JoinColumn(name = "table_id")
+    var table: TableRecord? = null
+
     fun addTo(room: TableRecord): StationRecord {
         this.table = room
         return this
