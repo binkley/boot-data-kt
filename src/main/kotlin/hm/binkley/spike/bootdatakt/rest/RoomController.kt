@@ -11,5 +11,6 @@ import org.springframework.web.bind.annotation.RestController
 class RoomController(
         @Autowired private val roomRepository: RoomRepository) {
     @GetMapping("rooms")
-    fun list() = roomRepository.findAll().map { RoomResponse(it) }.toSet()
+    fun list() = roomRepository.findAll()
+            .map { RoomResponse(it) }
 }

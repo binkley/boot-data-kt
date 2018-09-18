@@ -1,5 +1,6 @@
 package hm.binkley.spike.bootdatakt.rest
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import hm.binkley.spike.bootdatakt.store.RoomRecord
 import hm.binkley.spike.bootdatakt.store.RoomRepository
 import org.junit.jupiter.api.Test
@@ -12,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ExtendWith(SpringExtension::class, MockitoExtension::class)
@@ -19,16 +21,23 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 internal class RoomControllerTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
+    @Autowired
+    private lateinit var objectMapper: ObjectMapper
     @MockBean
     private lateinit var roomRepository: RoomRepository
 
     @Test
     fun shouldList() {
+        val rooms = listOf(RoomRecord(
+                name = "Front"))
         `when`(roomRepository.findAll())
-                .thenReturn(listOf(RoomRecord(
-                        name = "Front")))
+                .thenReturn(rooms)
 
         mockMvc.perform(get("/api/rooms"))
                 .andExpect(status().isOk)
+                .andExpect(content().json(asJson(
+                        rooms.map { RoomResponse(it) })))
     }
+
+    private fun asJson(obj: Any?) = objectMapper.writeValueAsString(obj)
 }
