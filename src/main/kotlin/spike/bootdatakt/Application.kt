@@ -9,7 +9,7 @@ import java.util.logging.Logger.getLogger
 
 
 @SpringBootApplication
-class BootyliciousApplication {
+class Application {
     @Component
     class Ready {
         @EventListener
@@ -19,10 +19,10 @@ class BootyliciousApplication {
     }
 
     companion object {
-        private val log = getLogger(BootyliciousApplication::class.toString())
+        private val log = getLogger(Application::class.toString())
     }
 }
 
 fun main(args: Array<String>) {
-    runApplication<BootyliciousApplication>(*args)
+    runApplication<Application>(*args)
 }
