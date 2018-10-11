@@ -12,15 +12,17 @@ import java.util.Optional
 @DataJpaTest
 @ExtendWith(SpringExtension::class)
 internal class PersonRepositoryTest(
-        @Autowired val repository: PersonRepository,
-        @Autowired val entityManager: TestEntityManager) {
+    @Autowired val repository: PersonRepository,
+    @Autowired val entityManager: TestEntityManager
+) {
     @Test
     fun shouldRoundtrip() {
         val saved = repository.saveAndFlush(
-                PersonRecord(name = "Bob"))
+            PersonRecord(name = "Bob")
+        )
         entityManager.clear()
 
         assertThat(repository.findById(saved.id))
-                .isEqualTo(Optional.of(saved))
+            .isEqualTo(Optional.of(saved))
     }
 }

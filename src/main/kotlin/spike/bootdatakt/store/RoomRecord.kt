@@ -15,14 +15,17 @@ import javax.validation.constraints.NotBlank
 @Entity
 @javax.persistence.Table(name = "Room")
 data class RoomRecord(
-        @get:NotBlank
-        @get:Length(max = 100)
-        val name: String = "",
-        @Id @GeneratedValue
-        val id: Long = Long.MIN_VALUE,
-        @OneToMany(mappedBy = "room", cascade = [ALL], fetch = EAGER,
-                orphanRemoval = true)
-        val tables: MutableSet<TableRecord> = mutableSetOf()) {
+    @get:NotBlank
+    @get:Length(max = 100)
+    val name: String = "",
+    @Id @GeneratedValue
+    val id: Long = Long.MIN_VALUE,
+    @OneToMany(
+        mappedBy = "room", cascade = [ALL], fetch = EAGER,
+        orphanRemoval = true
+    )
+    val tables: MutableSet<TableRecord> = mutableSetOf()
+) {
     fun add(table: TableRecord): RoomRecord {
         tables.add(table)
         table.addTo(this)

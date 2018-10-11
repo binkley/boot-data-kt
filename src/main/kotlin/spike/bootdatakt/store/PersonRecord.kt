@@ -10,8 +10,9 @@ import javax.validation.constraints.NotBlank
 @Entity
 @Table(name = "Person")
 data class PersonRecord(
-        @get:NotBlank
-        @get:Length(max = 100)
-        val name: String = "",
-        @Id @GeneratedValue
-        val id: Long = Long.MIN_VALUE)
+    @get:NotBlank
+    @get:Length(max = 100)
+    val name: String = "",
+    @Id @GeneratedValue
+    val id: Long = Long.MIN_VALUE
+)

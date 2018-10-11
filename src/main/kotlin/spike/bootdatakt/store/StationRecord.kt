@@ -16,11 +16,12 @@ import javax.validation.constraints.NotBlank
 @Entity
 @javax.persistence.Table(name = "Station")
 data class StationRecord(
-        @get:NotBlank
-        @get:Length(max = 100)
-        val name: String = "",
-        @Id @GeneratedValue
-        val id: Long = Long.MIN_VALUE) {
+    @get:NotBlank
+    @get:Length(max = 100)
+    val name: String = "",
+    @Id @GeneratedValue
+    val id: Long = Long.MIN_VALUE
+) {
     @ManyToOne(cascade = [ALL], fetch = EAGER, optional = false)
     @JoinColumn(name = "table_id")
     var table: TableRecord? = null

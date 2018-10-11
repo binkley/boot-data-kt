@@ -28,15 +28,22 @@ internal class RoomControllerTest {
 
     @Test
     fun shouldList() {
-        val rooms = listOf(RoomRecord(
-                name = "Front"))
+        val rooms = listOf(
+            RoomRecord(
+                name = "Front"
+            )
+        )
         `when`(roomRepository.findAll())
-                .thenReturn(rooms)
+            .thenReturn(rooms)
 
         mockMvc.perform(get("/api/rooms"))
-                .andExpect(status().isOk)
-                .andExpect(content().json(asJson(
-                        rooms.map { RoomResponse(it) })))
+            .andExpect(status().isOk)
+            .andExpect(
+                content().json(
+                    asJson(
+                        rooms.map { RoomResponse(it) })
+                )
+            )
     }
 
     private fun asJson(obj: Any?) = objectMapper.writeValueAsString(obj)

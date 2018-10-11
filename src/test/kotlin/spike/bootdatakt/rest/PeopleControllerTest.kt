@@ -19,8 +19,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(PeopleController::class)
 internal class PeopleControllerTest(
-        @Autowired val mvc: MockMvc,
-        @Autowired val objectMapper: ObjectMapper) {
+    @Autowired val mvc: MockMvc,
+    @Autowired val objectMapper: ObjectMapper
+) {
     @MockBean
     private lateinit var personFactory: PersonFactory
     @MockBean
@@ -30,17 +31,28 @@ internal class PeopleControllerTest(
     fun shouldWork() {
         val name = "Bob"
         whenever(personFactory.person(name))
-                .thenReturn(Person(name,
-                        repository))
+            .thenReturn(
+                Person(
+                    name,
+                    repository
+                )
+            )
 
-        mvc.perform(post("/api/people/register")
+        mvc.perform(
+            post("/api/people/register")
                 .contentType(APPLICATION_JSON_UTF8)
-                .content(asJson(
+                .content(
+                    asJson(
                         PersonRegisterRequest(
-                                name))))
-                .andExpect(status().isCreated)
+                            name
+                        )
+                    )
+                )
+        )
+            .andExpect(status().isCreated)
     }
 
     private fun asJson(content: Any) = objectMapper.writeValueAsString(
-            content)
+        content
+    )
 }
